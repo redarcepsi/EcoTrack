@@ -1,4 +1,7 @@
 import re
+import json
+
+ficher_json='EcoTrack/user.json'
 
 class User:
     def __init__(self,firstname,ville,departement,mdp,mail):
@@ -24,6 +27,17 @@ class Users:
         self.all=[]
 
     def add_user(self):
+        mail=input("mail : ")
+        patternmail = r'@[\w\.-]+\.\w+$'
+        while re.match(patternmail, mail):
+            print("votre mail contient une erreur")
+            mail=input("mail : ")
+
+        with open(ficher_json,'r') as file:
+            file_data = json.load(file)
+            if mail in file_data["user"].keys():
+                print("email deja utiliser")
+                return False
 
         firstname=input("prenom : ")
         while not re.match("^[a-zA-Z]+$", firstname):
@@ -44,19 +58,32 @@ class Users:
                 departement=input("numero de departement : ")
             break
 
-        mail=input("mail : ")
-        while "@" not in mail:
-            print("votre mail contient une erreur")
-            mail=input("mail : ")
-
         mdp=input("mot de passe : ")
+        while len(mdp)<5:
+            print("votre mdp n'est pas assez long")
+            mdp=input("mot de passe : ")
 
         user=User(firstname,ville,departement,mdp,mail)
         self.all.append(user)
+
+        with open(ficher_json,'r+') as file:
+            file_data = json.load(file)
+            file_data["user"][mail]={"firstname":firstname,"ville":ville,"departement":departement,"mdp":mdp}
+            file.seek(0)
+            json.dump(file_data,file,indent="\t")
     
     def show_one(self):
         return self.all[-1]
-
+    
+    def connexion(self,mail,mdp):
+        for elt in self.all:
+            if elt.mail == mail :
+                if elt.mdp == mdp :
+                    return "connecter"
+                else :
+                    return "erreur mdp"
+            else :
+                return "mail inconnu"
+            
 truc=Users()
 truc.add_user()
-print(truc.show_one())
