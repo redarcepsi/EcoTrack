@@ -1,7 +1,7 @@
 import re
 import json
 
-ficher_json='EcoTrack/user.json'
+ficher_json='EcoTrack/data.json'
 
 class User:
     def __init__(self,firstname,ville,departement,mdp,mail):
@@ -72,18 +72,14 @@ class Users:
             file.seek(0)
             json.dump(file_data,file,indent="\t")
     
-    def show_one(self):
-        return self.all[-1]
-    
     def connexion(self,mail,mdp):
-        for elt in self.all:
-            if elt.mail == mail :
-                if elt.mdp == mdp :
-                    return "connecter"
+        with open(ficher_json,'r') as file:
+            file_data = json.load(file)
+            if mail in file_data["user"].keys():
+                if file_data["user"][mail]["mdp"]==mdp:
+                    print("connecter")
+                    return mail
                 else :
-                    return "erreur mdp"
+                    print("erreur mdp")
             else :
-                return "mail inconnu"
-            
-truc=Users()
-truc.add_user()
+                print("mail inconnu")
