@@ -1,0 +1,24 @@
+{
+	"user": {
+		"henri@gmail.com": {
+			"firstname": "henri",
+			"ville": "auxerre",
+			"departement": "89",
+			"mdp": "truc"
+		},
+		"jp@gmail.com": {
+			"firstname": "jp",
+			"ville": "auxerre",
+			"departement": "89",
+			"mdp": "truc"
+		}
+	},
+	"data": {
+		"henri@gmail.com": {
+			"17/03":{
+				"voiture":15,
+				"moto":60
+			}
+		}
+	}
+}
